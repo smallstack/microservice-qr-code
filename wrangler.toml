@@ -1,0 +1,7 @@
+name = "qrcode"
+type = "webpack"
+account_id = "b35c4b674c6583e9baeaaee11bca4bd5"
+workers_dev = true
+route = ""
+zone_id = ""
+webpack_config = "webpack.config.js"
