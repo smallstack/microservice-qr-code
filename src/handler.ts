@@ -1,6 +1,18 @@
 import { imageSync, image_type } from "qr-image";
 
 export async function handleRequest(req: Request): Promise<Response> {
+
+  if (req.method === 'OPTIONS') {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
+  }
+
+
   try {
     const url: URL = new URL(req.url);
     if (req.method !== "GET")
@@ -32,7 +44,7 @@ export async function handleRequest(req: Request): Promise<Response> {
     }
 
     const qrCode = imageSync(code, { type, margin: 2, size });
-    return new Response(qrCode, { headers: { "Content-type": contentType }, status: 200 });
+    return new Response(qrCode, { headers: { "Content-type": contentType, 'Access-Control-Allow-Origin': '*' }, status: 200 });
   } catch (e) {
     return new Response(e, { status: 500 });
   }
