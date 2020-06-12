@@ -1,15 +1,39 @@
-import { imageSync } from "qr-image";
+import { imageSync, image_type } from "qr-image";
 
 export async function handleRequest(req: Request): Promise<Response> {
-  const url: URL = new URL(req.url);
-  if (req.method !== "GET")
-    throw new Error("No HTTP GET method used to call this function");
-  const code = url.searchParams.get("code");
-  if (!code)
-    throw new Error("No query parameter `code` for QR-code generation provided");
-  if (code.length > 2048)
-    throw new Error("Provided string exeeds max length of 2024 characters");
+  try {
+    const url: URL = new URL(req.url);
+    if (req.method !== "GET")
+      return new Response("No HTTP GET method used to call this function", { status: 405, statusText: "Method not allowed" });
+    const code = url.searchParams.get("code");
+    const type: image_type = url.searchParams.has("type") ? url.searchParams.get("type") as any : "svg";
+    if (!code)
+      return new Response("No query parameter `code` for QR-code generation provided", { status: 400 });
+    let size = url.searchParams.has("size") ? parseInt(url.searchParams.get("size")) : undefined;
+    if (code.length > 2048)
+      return new Response("Provided string exeeds max length of 2024 characters", { status: 400 });
 
-  const qrCode = imageSync(code, { type: "png", margin: 2 });
-  return new Response(qrCode, { headers: { "Content-type": "image/png" } });
+    let contentType: string;
+    switch (type) {
+      case "eps":
+        contentType = "application/postscript";
+        break;
+      case "pdf":
+        contentType = "application/pdf";
+        break;
+      case "svg":
+        contentType = "image/svg+xml";
+        break;
+      case "png":
+      default:
+        contentType = "image/png";
+        if (size === undefined)
+          size = 10
+    }
+
+    const qrCode = imageSync(code, { type, margin: 2, size });
+    return new Response(qrCode, { headers: { "Content-type": contentType }, status: 200 });
+  } catch (e) {
+    return new Response(e, { status: 500 });
+  }
 }
