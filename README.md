@@ -1,37 +1,38 @@
-# ʕ •́؈•̀) `workers-typescript-template`
+# sv
 
-A batteries included template for kick starting a TypeScript Cloudflare worker project.
+Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
-## 🔋 Getting Started
+## Creating a project
 
-This template is meant to be used with [Wrangler](https://github.com/cloudflare/wrangler). If you are not already familiar with the tool, we recommend that you install the tool and configure it to work with your [Cloudflare account](https://dash.cloudflare.com). Documentation can be found [here](https://developers.cloudflare.com/workers/tooling/wrangler/).
-
-To generate using Wrangler, run this command:
+If you're seeing this, you've probably already done this step. Congrats!
 
 ```bash
-wrangler generate my-ts-project https://github.com/EverlastingBugstopper/worker-typescript-template
+# create a new project in the current directory
+npx sv create
+
+# create a new project in my-app
+npx sv create my-app
 ```
 
-### 👩 💻 Developing
+## Developing
 
-[`src/index.js`](./src/index.ts) calls the request handler in [`src/handler.ts`](./src/handler.ts), and will return the [request method](https://developer.mozilla.org/en-US/docs/Web/API/Request/method) for the given request.
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
-### 🧪 Testing
+```bash
+npm run dev
 
-This template comes with mocha tests which simply test that the request handler can handle each request method. `npm test` will run your tests.
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
+```
 
-### ✏️ Formatting
+## Building
 
-This template uses [`prettier`](https://prettier.io/) to format the project. To invoke, run `npm run format`.
+To create a production version of your app:
 
-### 👀 Previewing and Publishing
+```bash
+npm run build
+```
 
-For information on how to preview and publish your worker, please see the [Wrangler docs](https://developers.cloudflare.com/workers/tooling/wrangler/commands/#publish).
+You can preview the production build with `npm run preview`.
 
-## 🤢 Issues
-
-If you run into issues with this specific project, please feel free to file an issue [here](https://github.com/cloudflare/workers-typescript-template/issues). If the problem is with Wrangler, please file an issue [here](https://github.com/cloudflare/wrangler/issues).
-
-## ⚠️ Caveats
-
-The `service-worker-mock` used by the tests is not a perfect representation of the Cloudflare Workers runtime. It is a general approximation. We recommend that you test end to end with `wrangler dev` in addition to a [staging environment](https://developers.cloudflare.com/workers/tooling/wrangler/configuration/environments/) to test things before deploying.
+> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
