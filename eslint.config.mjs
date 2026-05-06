@@ -1,77 +1,56 @@
-import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
+import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import globals from "globals";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import parser from "svelte-eslint-parser";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all
-});
 
 export default [
   {
     ignores: [
       "**/.DS_Store",
       "**/node_modules",
-      "build",
-      ".svelte-kit",
-      "package",
+      "**/dist",
+      "**/coverage",
       "**/.env",
       "**/.env.*",
       "!**/.env.example",
-      "**/pnpm-lock.yaml",
       "**/package-lock.json",
       "**/yarn.lock",
-      "**/dist",
-      "**/coverage",
-      "**/public",
-      "**/static",
-      "**/tmp",
-      "**/.firestore",
-      "**/.vercel"
-    ]
+      "**/pnpm-lock.yaml",
+    ],
   },
-  ...compat.extends("eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:svelte/recommended", "prettier"),
+  js.configs.recommended,
   {
+    files: ["**/*.ts"],
     plugins: {
-      "@typescript-eslint": typescriptEslint
+      "@typescript-eslint": typescriptEslint,
     },
     rules: {
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-unused-vars": ["error", { caughtErrors: "none" }],
-      quotes: ["warn", "double"]
+      quotes: ["warn", "double"],
     },
     languageOptions: {
       globals: {
-        ...globals.browser,
-        ...globals.node
+        ...globals.node,
+        // Web/fetch globals available in both the Bunny edge runtime and
+        // modern Node (and exercised in vitest tests).
+        Request: "readonly",
+        Response: "readonly",
+        URL: "readonly",
+        URLSearchParams: "readonly",
+        BodyInit: "readonly",
       },
       parser: tsParser,
-      ecmaVersion: 2020,
+      ecmaVersion: 2022,
       sourceType: "module",
-      parserOptions: {
-        extraFileExtensions: [".svelte"]
-      }
-    }
+    },
   },
   {
-    files: ["**/*.svelte"],
-
-    languageOptions: {
-      parser: parser,
-      ecmaVersion: 5,
-      sourceType: "script",
-
-      parserOptions: {
-        parser: "@typescript-eslint/parser"
-      }
-    }
-  }
+    // The Bunny Edge entry uses a remote `https://...` import that ESLint
+    // can't resolve in a Node context.
+    files: ["src/index.ts"],
+    rules: {
+      "import/no-unresolved": "off",
+    },
+  },
 ];
