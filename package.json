@@ -9,7 +9,7 @@
     "deploy": "bunny deploy",
     "check": "tsc --noEmit",
     "lint": "eslint .",
-    "test:unit": "vitest",
+    "test:unit": "vitest --passWithNoTests",
     "test": "npm run test:unit -- --run"
   },
   "devDependencies": {
