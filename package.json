@@ -8,6 +8,7 @@
     "dev": "deno run --allow-net --allow-env --allow-read src/index.ts",
     "deploy": "bunny deploy",
     "check": "tsc --noEmit",
+    "build": "node build.mjs",
     "lint": "eslint .",
     "test:unit": "vitest --passWithNoTests",
     "test": "npm run test:unit -- --run"
@@ -18,6 +19,7 @@
     "@types/qr-image": "^3.2.9",
     "@typescript-eslint/eslint-plugin": "^8.20.0",
     "@typescript-eslint/parser": "^8.20.0",
+    "esbuild": "^0.28.0",
     "eslint": "^9.18.0",
     "globals": "^15.14.0",
     "typescript": "^5.0.0",

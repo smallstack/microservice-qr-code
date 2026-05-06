@@ -21,8 +21,9 @@ jobs:
       - run: npm run check
       - run: npm run lint
       - run: npm test
+      - run: npm run build
       - name: Deploy Script to Bunny Edge Scripting
         uses: BunnyWay/actions/deploy-script@main
         with:
           script_id: 73417
-          file: "src/index.ts"
+          file: "dist/index.js"
