@@ -5,7 +5,7 @@
 // Docs: https://docs.bunny.net/docs/edge-scripting-overview
 
 // @ts-expect-error - Bunny resolves this URL specifier at deploy time.
-import BunnySDK from "https://esm.sh/@bunny.net/edgescript-sdk@0.12.1";
+import { net } from "https://esm.sh/@bunny.net/edgescript-sdk@0.12.1";
 import { imageSync, type image_type } from "qr-image";
 
 const MAX_CODE_LENGTH = 2048;
@@ -76,4 +76,4 @@ const handleRequest = async (request: Request): Promise<Response> => {
   }
 };
 
-BunnySDK.net.http.serve(handleRequest);
+net.http.serve(handleRequest);
