@@ -7,7 +7,7 @@
 // under Node (vitest) without depending on the Bunny runtime.
 
 // @ts-expect-error - Bunny resolves this URL specifier at deploy time.
-import BunnySDK from "https://esm.sh/@bunny.net/edgescript-sdk@0.12.2";
+import BunnySDK from "https://esm.sh/@bunny.net/edgescript-sdk@0.12.1";
 import { handleRequest } from "./handler.ts";
 
 BunnySDK.net.http.serve(handleRequest);
