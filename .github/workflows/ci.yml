@@ -5,7 +5,7 @@ on:
     branches: ["main"]
 
 jobs:
-  BuildAndTest:
+  BuildAndTestAndUpload:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,3 +16,8 @@ jobs:
       - run: npm run check
       - run: npm run lint
       - run: npm test
+      - name: Deploy Script to Bunny Edge Scripting
+        uses: BunnyWay/actions/deploy-script@main
+        with:
+          script_id: 73417
+          file: "src/index.ts"
